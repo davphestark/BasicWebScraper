@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
 
 namespace webscraper
 {
@@ -13,38 +6,30 @@ namespace webscraper
     {
         static void Main(string[] args)
         {
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument doc = web.Load("http://www.bbc.com/sport/football/premier-league/table");
-            
-            HtmlNode legaueTable = doc.DocumentNode.SelectSingleNode("//table[@data-competition-slug='premier-league']");
-            if (legaueTable != null)
-            {
-                int leaderPoints = 0;
-                int champsPoints = 0;
-                int UnitedPoints = 0;
-                HtmlNodeCollection teamRows = legaueTable.SelectNodes("//tr[@data-team-slug]");
-                HtmlNode leaders = legaueTable.SelectSingleNode("//tr//td[@class='position']/span[text() = 1 and @class='position-number']");
-                leaderPoints = int.Parse(leaders.ParentNode.SelectSingleNode("//td[@class='points']").InnerText);
-                HtmlNode fourth = legaueTable.SelectSingleNode("//tr//td[@class='position']/span[text() = 4 and @class='position-number']");
-                champsPoints = int.Parse(fourth.ParentNode.ParentNode.SelectSingleNode("td[@class='points']").InnerText);
-                Console.WriteLine("League leaders are at: " + leaderPoints + " points");
-                Console.WriteLine("Final Champions League place is at: " + champsPoints + " points");
-
-                HtmlNode United = legaueTable.SelectSingleNode("//tr[@data-team-slug='manchester-united']");
-                UnitedPoints = int.Parse(United.SelectSingleNode("td[@class='points']").InnerText);
-                Console.WriteLine(United.SelectSingleNode("td[@class='team-name']").InnerText + " are " + (leaderPoints - UnitedPoints) + " behind the leaders");
-                Console.WriteLine(United.SelectSingleNode("td[@class='team-name']").InnerText + " are " + (champsPoints - UnitedPoints) + " back of the champions league");
-                Console.WriteLine("the last ten games for " + United.SelectSingleNode("td[@class='team-name']").InnerText + ":");
-                HtmlNodeCollection games = United.SelectNodes("td[@class='last-10-games']/ol/li");
-                foreach (HtmlNode game in games)
-                {
-                    Console.WriteLine(game.GetAttributeValue("title", "no game found"));
-                }
-
-            }
-            else { Console.WriteLine("Didn't find the table"); }
+            LeagueTeams PremierLeague = new LeagueTeams("premier-league");
+            PrintOut("Manchester United", PremierLeague);
 
             Console.ReadKey();
         }
+        private static void PrintOut(string teamName, LeagueTeams League)
+        {
+            Team leaders = League.Teams.Find(t => t.Position == 1);
+            Team lastChamps = League.Teams.Find(t => t.Position == 4);
+            Team dropZone = League.Teams.Find(t => t.Position == 18);
+            Team searchedTeam = League.Teams.Find(t => t.Name == teamName);
+            Console.WriteLine(String.Format($"League leaders {leaders.Name} are at: {leaders.Points} points"));
+            Console.WriteLine(String.Format($"Final Champions League place is {lastChamps.Name} at: {lastChamps.Points} points"));
+            Console.WriteLine(String.Format($"{dropZone.Name} are top of the drop at: {dropZone.Points} points"));
+            Console.WriteLine(String.Format($"{searchedTeam.Name} are {(leaders.Points - searchedTeam.Points)} points behind the leaders"));
+            Console.WriteLine(String.Format($"{searchedTeam.Name} are {(lastChamps.Points - searchedTeam.Points)} points back of the champions league"));
+            Console.WriteLine(String.Format($"{searchedTeam.Name} are {(searchedTeam.Points - dropZone.Points)} points above the drop"));
+            Console.WriteLine();
+            Console.WriteLine(String.Format($"the last ten league games for { searchedTeam.Name} are:" ));
+            foreach (string game in searchedTeam.LastTen)
+            {
+                Console.WriteLine(game);
+            }
+        }
+
     }
 }
