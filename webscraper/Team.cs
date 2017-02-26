@@ -16,9 +16,11 @@ namespace webscraper
         public int GoalDiff { get; set; }
         public int Points { get; set; }
         public List<string> LastTen;
+        public int LastTenPoints { get; set; }
         public Team()
         {
             LastTen = new List<string>();
+            LastTenPoints = 0;
         }
         public Team(HtmlNode xmlTeam) : this()
         {
@@ -32,11 +34,21 @@ namespace webscraper
             GoalsAgainst = int.Parse(xmlTeam.SelectSingleNode("td[@class='against']").InnerText);
             GoalDiff = int.Parse(xmlTeam.SelectSingleNode("td[@class='goal-difference']").InnerText);
             Points = int.Parse(xmlTeam.SelectSingleNode("td[@class='points']").InnerText);
-            HtmlNodeCollection games = xmlTeam.SelectNodes("td[@class='last-10-games']/ol/li");
+            getLastTenInfo(xmlTeam.SelectNodes("td[@class='last-10-games']/ol/li"));
+        }
+        private void getLastTenInfo(HtmlNodeCollection games)
+        {
             foreach (HtmlNode game in games)
             {
                 LastTen.Add(game.GetAttributeValue("title", "no game found"));
+                LastTenPoints += getGamePoint(game.GetAttributeValue("class", "loss"));
             }
+        }
+        private int getGamePoint(string result)
+        {
+            if (result == "draw") { return 1; }
+            if (result == "win") { return 3; }
+            return 0;
         }
     }
 }
