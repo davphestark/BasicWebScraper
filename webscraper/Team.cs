@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HtmlAgilityPack;
 
 namespace webscraper
@@ -17,12 +18,14 @@ namespace webscraper
         public int Points { get; set; }
         public List<string> LastTen;
         public int LastTenPoints { get; set; }
+        public bool LeagueBubbleDivider { get; set; }
+        public string LeagueSection { get; set; }
         public Team()
         {
             LastTen = new List<string>();
             LastTenPoints = 0;
         }
-        public Team(HtmlNode xmlTeam) : this()
+        public void Init(HtmlNode xmlTeam) 
         {
             Name = xmlTeam.SelectSingleNode("td[@class = 'team-name']/a").InnerText;
             Position = int.Parse(xmlTeam.SelectSingleNode("td[@class = 'position']/span[@class = 'position-number']").InnerText);
@@ -35,7 +38,14 @@ namespace webscraper
             GoalDiff = int.Parse(xmlTeam.SelectSingleNode("td[@class='goal-difference']").InnerText);
             Points = int.Parse(xmlTeam.SelectSingleNode("td[@class='points']").InnerText);
             getLastTenInfo(xmlTeam.SelectNodes("td[@class='last-10-games']/ol/li"));
+            LeagueBubbleDivider = GetDivider(xmlTeam.GetAttributeValue("class", "no team class"));
         }
+
+        private bool GetDivider(string divider)
+        {
+            return (divider.Contains("divider"));
+        }
+
         private void getLastTenInfo(HtmlNodeCollection games)
         {
             foreach (HtmlNode game in games)

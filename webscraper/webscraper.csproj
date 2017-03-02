@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LeagueDivisions.cs" />
     <Compile Include="LeagueTeams.cs" />
+    <Compile Include="PrintDividerTeam.cs" />
     <Compile Include="PrintInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
