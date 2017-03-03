@@ -47,8 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LeagueDivisionGuesser.cs" />
     <Compile Include="LeagueDivisions.cs" />
-    <Compile Include="LeagueTeams.cs" />
+    <Compile Include="League.cs" />
     <Compile Include="PrintDividerTeam.cs" />
     <Compile Include="PrintInfo.cs" />
     <Compile Include="Program.cs" />
