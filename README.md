@@ -52,3 +52,10 @@ Draw v Hull City 0 - 0 on 1st February 2017
 Win v Leicester City 0 - 3 on 5th February 2017
 
 Win v Watford 2 - 0 on 11th February 2017
+
+---
+Update 3/8/2017
+Added a UI to swap out leagues and teams easier
+
+WPFLeaguePosition.sln has the UI 
+webscraper.sln still runs the old console version, but is otherwise dead.
