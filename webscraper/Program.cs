@@ -6,12 +6,14 @@ namespace webscraper
     {
         static void Main(string[] args)
         {
-            //League PremierLeague = new League("premier-league");
-            //PrintInfo p = new PrintInfo("Manchester United", PremierLeague);
+            //largelyDead with the wpf ui
+            League league = new League();
+            league.Init("premier-league");
+            PrintInfo p = new PrintInfo("Manchester United", league);
             //League PremierLeague = new League("championship");
             //PrintInfo p = new PrintInfo("Nottingham Forest", PremierLeague);
-            League PremierLeague = new League("scottish-premiership");
-            PrintInfo p = new PrintInfo("Rangers", PremierLeague);
+            //League PremierLeague = new League("scottish-premiership");
+            //PrintInfo p = new PrintInfo("Rangers", PremierLeague);
             p.PrintLeagueSpots();
             p.PrintLeagueStatusFor();
             p.PrintLastTenProgressFor();
