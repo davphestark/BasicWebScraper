@@ -1,0 +1,29 @@
+﻿<Window x:Class="WPFLeaguePosition.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFLeaguePosition"
+        xmlns:controls="clr-namespace:WPFLeaguePosition.UserControls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="600">
+    <Grid>
+        <Label x:Name="lblSelectLeague" Content="Select a League:" HorizontalAlignment="Left" Height="27" Margin="22,41,0,0" VerticalAlignment="Top" Width="125"/>
+        <ComboBox x:Name="cboLeague" HorizontalAlignment="Left" Height="27" Margin="152,41,0,0" VerticalAlignment="Top" Width="170" SelectionChanged="cboLeague_SelectionChanged">
+            <ComboBoxItem Tag="premier-league">Premier League</ComboBoxItem>
+            <ComboBoxItem Tag="championship">Championship</ComboBoxItem>
+            <ComboBoxItem Tag="league-one">League One</ComboBoxItem>
+            <ComboBoxItem Tag="league-two">League Two</ComboBoxItem>
+            <ComboBoxItem Tag="national-league">National League</ComboBoxItem>
+            <ComboBoxItem Tag="scottish-premiership">Scottish Premiership</ComboBoxItem>
+            <ComboBoxItem Tag="scottish-championship">Scottish Championship</ComboBoxItem>
+            <ComboBoxItem Tag="scottish-league-one">Scottish League One</ComboBoxItem>
+            <ComboBoxItem Tag="scottish-league-one">Scottish League Two</ComboBoxItem>
+        </ComboBox>
+        <controls:BusyIndicator x:Name="BusyIndicator" Visibility="Hidden" Margin="342,41,206,488" RenderTransformOrigin="-1.097,-10.932" />
+        <Label x:Name="lblSelectTeam" Content="Select a Team" HorizontalAlignment="Left" Margin="22,87,0,0" VerticalAlignment="Top" Width="125"/>
+        <ComboBox x:Name="cboTeam" HorizontalAlignment="Left" Height="26" Margin="152,87,0,0" VerticalAlignment="Top" Width="170" SelectionChanged="cboTeam_SelectionChanged" IsEnabled="False"/>
+        <TextBox x:Name="TeamInfo" HorizontalAlignment="Left" Height="427" Margin="10,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="572"/>
+
+    </Grid>
+</Window>
