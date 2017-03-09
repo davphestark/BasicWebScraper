@@ -9,10 +9,12 @@ namespace webscraper
     public class LeagueDivisionGuesser
     {
         private League _league;
+        private int NumberOfTeams;
 
         public void Init(League league)
         {
             _league = league;
+            NumberOfTeams = league.Teams.Count();
         }
         public void GuessDivisionsFromDividers()
         {
@@ -41,7 +43,7 @@ namespace webscraper
 
         private string SetDivisionNameBySplit(int position, int[] splitDivisions)
         {
-            if (position < 10) {return SetTopDivisionsName(position, splitDivisions);}
+            if (position <= (NumberOfTeams / 2 + 1)) {return SetTopDivisionsName(position, splitDivisions);}
             else { return GuessBottomDividersByPosition(position, splitDivisions); }            
         }
 
@@ -58,8 +60,8 @@ namespace webscraper
             int topBottomsplitIndex = 0;
             for (int i = 0; i < dividerArray.Length; i++)
             {
-                if (dividerArray[i] < 10) { dividerArray[i] = dividerArray[i] - 1; }
-                if (dividerArray[i] > 9 && topBottomsplitIndex == 0) { topBottomsplitIndex = i; }
+                if (dividerArray[i] <= (NumberOfTeams / 2 + 1)) { dividerArray[i] = dividerArray[i] - 1; }
+                if (dividerArray[i] >= (NumberOfTeams / 2 + 1) && topBottomsplitIndex == 0) { topBottomsplitIndex = i; }
             }
             int[][] ret = new int[2][];
             ret[0] = dividerArray.Take(topBottomsplitIndex).ToArray();
@@ -91,7 +93,7 @@ namespace webscraper
         }
         private string GuessTopDividerByPositionRegularLeague(int position, int[] numberInGroup)
         {
-            if (position == 2 || position == 3) { return "Automatic Promotion"; }
+            if (position < 4) { return "Last Automatic Promotion Spot"; }
             if (position > 1 && is3or4TeamsInGroup(numberInGroup[0], numberInGroup[1])) { return "Last Promotion Playoff Spot"; }
             return "none";
         }
@@ -103,7 +105,7 @@ namespace webscraper
 
         private string GuessBottomDividersByPosition(int position, int[] numberInGroup)
         {
-            if (position > 10 && numberInGroup.Length == 1) { return "Top of Relegation Zone"; }
+            if (position >= (NumberOfTeams / 2 + 1) && numberInGroup.Length == 1) { return "Top of Relegation Zone"; }
             if (numberInGroup.Length == 2)
             {
                 if (position == numberInGroup[0]) { return "Top of Relegation Zone Playoff"; }

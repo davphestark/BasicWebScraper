@@ -10,11 +10,13 @@ namespace webscraper
         public Team LastGoodSpot { get; set; }
         public Team DropZone { get; set; }
         public Team SearchTeam { get; set; }
+		private string LeagueName { get; set; }
 
         public PrintInfo(string teamName, League league)
         {
             DividerTeams = new List<PrintDividerTeam>();
             SearchTeam = league.Teams.Find(t => t.Name == teamName);
+            LeagueName = league.LeagueName;
             foreach (LeagueDivisions division in league.Divisions)
             {
                 var printDividerTeam = new PrintDividerTeam();
@@ -33,16 +35,29 @@ namespace webscraper
         }
         public void PrintLeagueStatusFor()
         {
-            foreach (PrintDividerTeam t in DividerTeams)
-            {
-                Console.WriteLine(String.Format("{0} are {1} points {2} the {3} with {4} game(s) in hand", 
-                    SearchTeam.Name, 
-                    Math.Abs(t.DividerTeam.Points - SearchTeam.Points), 
-                    (t.DividerTeam.Points - SearchTeam.Points) < 0 ? "ahead" : "behind", 
-                    t.DivisionName, 
-                    (t.DividerTeam.Played - SearchTeam.Played)));
-            }            
+            if (SearchTeam != null)
+            {               
+                foreach (PrintDividerTeam t in DividerTeams)
+                {
+                    Console.WriteLine(String.Format("{0} are {1} points {2} the {3} with {4} game(s) in hand",
+                        SearchTeam.Name,
+                        Math.Abs(t.DividerTeam.Points - SearchTeam.Points),
+                        (t.DividerTeam.Points - SearchTeam.Points) < 0 ? "ahead" : "behind",
+                        t.DivisionName,
+                        (t.DividerTeam.Played - SearchTeam.Played)));
+                }
+            }
         }
+
+        private string ConvertPositionToEnglish(int position)
+        {
+            if (position > 3) { return position + "th"; };
+            if (position == 3) { return position + "rd"; };
+            if (position == 2) { return position + "nd"; };
+            if (position == 1) { return position + "st"; };
+            return "";
+        }
+
         public void PrintLastTenProgressFor()
         {
             foreach (PrintDividerTeam t in DividerTeams)
@@ -56,6 +71,13 @@ namespace webscraper
             foreach (string game in SearchTeam.LastTen)
             {
                 Console.WriteLine(game);
+            }
+        }
+        public void PrintSearchTeamLeaguePosition()
+        {
+            if (SearchTeam != null)
+            {
+                Console.WriteLine(String.Format($"{SearchTeam.Name} is currently in {ConvertPositionToEnglish(SearchTeam.Position)} place in the {LeagueName}"));
             }
         }
     }
