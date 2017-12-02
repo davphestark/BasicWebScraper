@@ -16,6 +16,7 @@ namespace webscraper
             _league = league;
             NumberOfTeams = league.Teams.Count();
         }
+
         public void GuessDivisionsFromDividers()
         {
             AddLeagueLeadersToDivisions();
@@ -55,6 +56,7 @@ namespace webscraper
             }
             return GuessTopDividerByPositionRegularLeague(position, splitDivisions);
         }
+
         private int[][] AdjustTopAndSplitTopAndBottomArrays(int[] dividerArray)
         {
             int topBottomsplitIndex = 0;
@@ -91,6 +93,7 @@ namespace webscraper
             }
             return "none";
         }
+
         private string GuessTopDividerByPositionRegularLeague(int position, int[] numberInGroup)
         {
             if (position < 4) { return "Last Automatic Promotion Spot"; }

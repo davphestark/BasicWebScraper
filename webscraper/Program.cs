@@ -8,7 +8,7 @@ namespace webscraper
         {
             //largelyDead with the wpf ui
             League league = new League();
-            league.Init("premier-league");
+            league.Init("premierleague");
             PrintInfo p = new PrintInfo("Manchester United", league);
             //League PremierLeague = new League("championship");
             //PrintInfo p = new PrintInfo("Nottingham Forest", PremierLeague);

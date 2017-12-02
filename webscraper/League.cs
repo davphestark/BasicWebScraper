@@ -16,6 +16,7 @@ namespace webscraper
             Teams = new List<Team>();
             Divisions = new List<LeagueDivisions>();
         }
+
         public void Init(string league)
         {
             LeagueId = league;
@@ -23,7 +24,7 @@ namespace webscraper
             HtmlNode leagueTable = LoadLeagueTable();
             if (leagueTable != null)
             {
-                LoadLeagueTeams(leagueTable.SelectNodes("tbody/tr[@data-team-slug]"));
+                LoadLeagueTeams(leagueTable.SelectNodes("table/tbody/tr"));
                 PopulateLeagueDivisions();
             }      
         }
@@ -48,13 +49,20 @@ namespace webscraper
         private HtmlNode LoadLeagueTable()
         {
             HtmlWeb web = new HtmlWeb();
-            HtmlDocument doc = web.Load("http://www.bbc.com/sport/football/" + LeagueId + "/table");
-            return doc.DocumentNode.SelectSingleNode("//table[@data-competition-slug='" + LeagueId + "']");
+            //BBC
+            //HtmlDocument doc = web.Load("http://www.bbc.com/sport/football/" + LeagueId + "/table");
+            //return doc.DocumentNode.SelectSingleNode("//table[@data-competition-slug='" + LeagueId + "']");
+            HtmlDocument doc = web.Load("https://www.theguardian.com/football/" + LeagueId + "/table");
+            return doc.DocumentNode.SelectSingleNode("//div[@class = 'table__container']");
         }
 
         public bool IsTopLeague(String league)
         {
             if (league.Contains("premier")) { return true; }
+            if (league.Contains("laliga")) { return true; }
+            if (league.Contains("bundesliga")) { return true; }
+            if (league.Contains("seriea")) { return true; }
+            if (league.Contains("ligue1")) { return true; }
             return false;
         }
     }

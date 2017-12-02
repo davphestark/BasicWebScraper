@@ -86,7 +86,7 @@ namespace WPFLeaguePosition
         {
             cboTeam.ItemsSource = ConvertTeamsToListItems(league);
             cboTeam.IsEnabled = true;
-            //cboTeam.SelectedIndex = 0;
+            cboTeam.SelectedIndex = 0;
         }
 
         private IEnumerable ConvertTeamsToListItems(League league)

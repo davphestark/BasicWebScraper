@@ -25,19 +25,35 @@ namespace webscraper
             LastTen = new List<string>();
             LastTenPoints = 0;
         }
-        public void Init(HtmlNode xmlTeam) 
+        //public void Init(HtmlNode xmlTeam) ----BBC
+        //{
+        //    Name = xmlTeam.SelectSingleNode("td[@class = 'team-name']/a").InnerText;
+        //    Position = int.Parse(xmlTeam.SelectSingleNode("td[@class = 'position']/span[@class = 'position-number']").InnerText);
+        //    Played = int.Parse(xmlTeam.SelectSingleNode("td[@class='played']").InnerText);
+        //    Won = int.Parse(xmlTeam.SelectSingleNode("td[@class='won']").InnerText);
+        //    Drawn = int.Parse(xmlTeam.SelectSingleNode("td[@class='drawn']").InnerText);
+        //    Lost = int.Parse(xmlTeam.SelectSingleNode("td[@class='lost']").InnerText);
+        //    GoalsFor = int.Parse(xmlTeam.SelectSingleNode("td[@class='for']").InnerText);
+        //    GoalsAgainst = int.Parse(xmlTeam.SelectSingleNode("td[@class='against']").InnerText);
+        //    GoalDiff = int.Parse(xmlTeam.SelectSingleNode("td[@class='goal-difference']").InnerText);
+        //    Points = int.Parse(xmlTeam.SelectSingleNode("td[@class='points']").InnerText);
+        //    getLastTenInfo(xmlTeam.SelectNodes("td[@class='last-10-games']/ol/li"));
+        //    LeagueBubbleDivider = GetDivider(xmlTeam.GetAttributeValue("class", "no team class"));
+        //}
+        public void Init(HtmlNode xmlTeam)
         {
-            Name = xmlTeam.SelectSingleNode("td[@class = 'team-name']/a").InnerText;
-            Position = int.Parse(xmlTeam.SelectSingleNode("td[@class = 'position']/span[@class = 'position-number']").InnerText);
-            Played = int.Parse(xmlTeam.SelectSingleNode("td[@class='played']").InnerText);
-            Won = int.Parse(xmlTeam.SelectSingleNode("td[@class='won']").InnerText);
-            Drawn = int.Parse(xmlTeam.SelectSingleNode("td[@class='drawn']").InnerText);
-            Lost = int.Parse(xmlTeam.SelectSingleNode("td[@class='lost']").InnerText);
-            GoalsFor = int.Parse(xmlTeam.SelectSingleNode("td[@class='for']").InnerText);
-            GoalsAgainst = int.Parse(xmlTeam.SelectSingleNode("td[@class='against']").InnerText);
-            GoalDiff = int.Parse(xmlTeam.SelectSingleNode("td[@class='goal-difference']").InnerText);
-            Points = int.Parse(xmlTeam.SelectSingleNode("td[@class='points']").InnerText);
-            getLastTenInfo(xmlTeam.SelectNodes("td[@class='last-10-games']/ol/li"));
+            Name = xmlTeam.SelectSingleNode("td[@class = 'table-column--main']/span/a")?.InnerText.Trim()
+                ?? xmlTeam.SelectSingleNode("td[@class = 'table-column--main']/span")?.InnerText.Trim();
+            Position = int.Parse(xmlTeam.SelectSingleNode("td[@class = 'table-column--sub']").InnerText);
+            Played = int.Parse(xmlTeam.SelectSingleNode("td[3]").InnerText);
+            Won = int.Parse(xmlTeam.SelectSingleNode("td[4]").InnerText);
+            Drawn = int.Parse(xmlTeam.SelectSingleNode("td[5]").InnerText);
+            Lost = int.Parse(xmlTeam.SelectSingleNode("td[6]").InnerText);
+            GoalsFor = int.Parse(xmlTeam.SelectSingleNode("td[7]").InnerText);
+            GoalsAgainst = int.Parse(xmlTeam.SelectSingleNode("td[8]").InnerText);
+            GoalDiff = int.Parse(xmlTeam.SelectSingleNode("td[9]").InnerText);
+            Points = int.Parse(xmlTeam.SelectSingleNode("td[10]/b").InnerText);
+            getLastTenInfo(xmlTeam.SelectNodes("td/div[@class='team__results']/span"));
             LeagueBubbleDivider = GetDivider(xmlTeam.GetAttributeValue("class", "no team class"));
         }
 
@@ -54,10 +70,11 @@ namespace webscraper
                 LastTenPoints += getGamePoint(game.GetAttributeValue("class", "loss"));
             }
         }
+
         private int getGamePoint(string result)
         {
-            if (result == "draw") { return 1; }
-            if (result == "win") { return 3; }
+            if (result.EndsWith("drew")) { return 1; }
+            if (result.EndsWith("won")) { return 3; }
             return 0;
         }
     }

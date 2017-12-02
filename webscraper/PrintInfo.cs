@@ -33,6 +33,7 @@ namespace webscraper
                 Console.WriteLine(String.Format($"The {t.DivisionName} is {t.DividerTeam.Name} at: {t.DividerTeam.Points} points"));
             }
         }
+
         public void PrintLeagueStatusFor()
         {
             if (SearchTeam != null)
@@ -62,17 +63,24 @@ namespace webscraper
         {
             foreach (PrintDividerTeam t in DividerTeams)
             {
-                Console.WriteLine(String.Format("{0} {1} {2} points on {3} in the last ten games", SearchTeam.Name, (SearchTeam.LastTenPoints - t.DividerTeam.LastTenPoints) < 0 ? "loss" : "gained", (SearchTeam.LastTenPoints - t.DividerTeam.LastTenPoints), t.DividerTeam.Name));
+                Console.WriteLine(String.Format("{0} {1} {2} points on {3} in the last {4} games", 
+                    SearchTeam.Name, 
+                    (SearchTeam.LastTenPoints - t.DividerTeam.LastTenPoints) < 0 ? "loss" : "gained", 
+                    (SearchTeam.LastTenPoints - t.DividerTeam.LastTenPoints), 
+                    t.DividerTeam.Name,
+                    SearchTeam.LastTen.Count));
             }
         }
+
         public void PrintLastGamesInfo()
         {
-            Console.WriteLine(String.Format($"the last ten league games gained {SearchTeam.LastTenPoints} for {SearchTeam.Name} are:"));
+            Console.WriteLine(String.Format($"The last {SearchTeam.LastTen.Count} league games yielded {SearchTeam.LastTenPoints} points for {SearchTeam.Name}:"));
             foreach (string game in SearchTeam.LastTen)
             {
                 Console.WriteLine(game);
             }
         }
+
         public void PrintSearchTeamLeaguePosition()
         {
             if (SearchTeam != null)
